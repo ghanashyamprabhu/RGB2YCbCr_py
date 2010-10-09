@@ -15,11 +15,12 @@ iv. The code takes an input BMP image and converts the RAW RGB data into a YCbCr
     with a .YCbCr extension(not a standard).
 v.  The code uses specific constants for Kb and Kr for extracting the luma and chroma components
     
+HOW TO RUN THE CODE:
 
+The code can be run on the linux shell provided there is python installed on the system. Along with
+python, python-imaging is also a pre-requisite. The command for running the code is as follows
 
-
-
-
+    $ python RGB2YCbCr.py <BMP_Image_filename> 
 
 
 

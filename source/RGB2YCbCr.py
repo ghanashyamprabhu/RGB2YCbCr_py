@@ -3,7 +3,7 @@
 # Author      : Ghanshyam
 # Dated       : 08.10.2010
 # Description : The file converts the Windows style BMP image to YCbCr binary stream 
-#               with a .ycbcr extention
+#               with a OuputFile.YCbCr extention
 #               The script shall be run with the argument as the BMP image. The output file 
 #               shall be stored in the current directory where the script is executed.
 # 
@@ -27,20 +27,15 @@
 
 # import the python imaging library : LIBRARIES IMPORT
 #!/usr/bin/python
-import sys
-import time
+import sys, time
 import Image, ImageDraw
-
-
+import os, math
 
 # Open the RGb file supplied with the script : INPUT FROM COMMAND LINE
 if(len(sys.argv) < 1):
     print "Usage : RGB2YCbCr <filename>"
     print "        filename : A valid Windows Bitmap File"
     sys.exit()
-
-
-
 
 # open the bmp image  : OPEN AND CONSUME THE BMP FILE
 try:
@@ -50,28 +45,31 @@ except:
     print "Error opening \"" + sys.argv[1] + "\". Check if file exists....................[EXIT]"
     sys.exit()
 
-
-##                              : PARSE FOR SIZE: 
+# PARSE FOR SIZE: 
 print "Input BMP Image Size'" 
 print BMPImage.size
 pixel=list(BMPImage.getdata())
 
-##                              Convert to YCbCr
-YCbCr = []
-for i in BMPImage.size:
+Outfile=open('Output.YCbCr', 'w')
 
+Size = BMPImage.size[0]*BMPImage.size[1]
+print Size
+
+# Convert to YCbCr
+for i in pixel:
+    
     ## Y Equation
-    Y = (0.257 * pixel[i][0]) + (0.504 * pixel[i][1]) + (0.098 * pixel[i][2]) + 16;
+    Y = math.trunc((0.257 * i[0]) + (0.504 * i[1]) + (0.098 * i[2]) + 16)
     ##Cb Equation
-    Cb = ((-0.148) * pixel[i][0]) - (0.291 * pixel[i][1]) + (0.439 * pixel[i][2]) + 128;
+    Cb = math.trunc(((-0.148) * i[0]) - (0.291 * i[1]) + (0.439 * i[2]) + 128)
     ## Cr Equantion
-    Cr = (0.439 * pixel[i][0]) - (0.368 * pixel[i][1]) - (0.071 * pixel[i][2]) + 128;
+    Cr = math.trunc((0.439 * i[0]) - (0.368 * i[1]) - (0.071 * i[2]) + 128)
+    
+    print >>Outfile, "%x" % Y 
+    print >>Outfile, "%x" % Cb
+    print >>Outfile, "%x" % Cr
 
-    YCbCr.append((Y,Cb,Cr))
-
-
-
-print YCbCr[0]
+Outfile.close()
 
 #BMPImage.show()
 
